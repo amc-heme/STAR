@@ -245,6 +245,10 @@ void ParametersSolo::initialize(Parameters *pPin)
         pP->quant.gene.yes = true;
         pP->quant.yes = true;
     };
+    if (featureYes[SoloFeatureTypes::Scraps]) {
+        pP->quant.scraps.yes = true;
+        pP->quant.yes = true;
+    };
     if (featureYes[SoloFeatureTypes::GeneFull]) {
         pP->quant.geneFull.yes = true;
         pP->quant.yes = true;
@@ -422,13 +426,14 @@ void ParametersSolo::initialize(Parameters *pPin)
     };
     samAttrFeature = featureFirst;
     if (samAttrYes){//pSolo.samAttrFeature=0 by default, so need to check samAttrYes
-        if (   featureFirst == SoloFeatureTypes::Gene || featureFirst == SoloFeatureTypes::GeneFull ||
+        if (   featureFirst == SoloFeatureTypes::Gene || featureFirst == SoloFeatureTypes::Scraps ||
+               featureFirst == SoloFeatureTypes::GeneFull ||
                featureFirst == SoloFeatureTypes::GeneFull_Ex50pAS || featureFirst == SoloFeatureTypes::GeneFull_ExonOverIntron ) {
             //all good
         } else {
             ostringstream errOut;
-            errOut << "EXITING because of fatal PARAMETERS error: CB and/or UB attributes in --outSAMattributes require --soloFeatures Gene OR/AND GeneFull OR/AND GeneFull_Ex50pAS.\n";
-            errOut << "SOLUTION: re-run STAR adding Gene AND/OR GeneFull OR/AND GeneFull_Ex50pAS OR/AND GeneFull_ExonOverIntron to --soloFeatures\n";
+            errOut << "EXITING because of fatal PARAMETERS error: CB and/or UB attributes in --outSAMattributes require --soloFeatures Gene OR/AND Scraps OR/AND GeneFull OR/AND GeneFull_Ex50pAS.\n";
+            errOut << "SOLUTION: re-run STAR adding Gene AND/OR Scraps OR/AND GeneFull OR/AND GeneFull_Ex50pAS OR/AND GeneFull_ExonOverIntron to --soloFeatures\n";
             exitWithError(errOut.str(),std::cerr, pP->inOut->logMain, EXIT_CODE_PARAMETER, *pP);
         };
         readInfoYes[samAttrFeature]=true;
@@ -486,6 +491,7 @@ void ParametersSolo::initialize(Parameters *pPin)
                             std::cerr, pP->inOut->logMain, EXIT_CODE_PARAMETER, *pP);
         };
         readIndexYes[SoloFeatureTypes::Gene]=true;
+        readIndexYes[SoloFeatureTypes::Scraps]=true;
         readIndexYes[SoloFeatureTypes::GeneFull]=true;
         readIndexYes[SoloFeatureTypes::GeneFull_Ex50pAS]=true;
         readIndexYes[SoloFeatureTypes::GeneFull_ExonOverIntron]=true;

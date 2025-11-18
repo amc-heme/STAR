@@ -324,6 +324,10 @@ class Parameters {
             struct {
                 bool yes=false;
             } gene;
+
+            struct {
+                bool yes=false;
+            } scraps;
           
         } quant;
 

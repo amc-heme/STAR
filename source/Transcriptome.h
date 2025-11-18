@@ -53,6 +53,7 @@ public:
     void geneFullAlignOverlap_ExonOverIntron(uint nA, Transcript **aAll, int32 strandType, ReadAnnotFeature &annFeat, ReadAnnotFeature &annFeatGeneConcordant);
     //void geneFullAlignOverlap_CR(uint nA, Transcript **aAll, int32 strandType, ReadAnnotations &readAnnot);
     void classifyAlign(Transcript **alignG, uint64 nAlignG, ReadAnnotations &readAnnot);
+    void classifyScrapsAlign(Transcript **alignG, uint64 nAlignG, ReadAnnotations &readAnnot);
     void alignExonOverlap(uint nA, Transcript **aAll, int32 strandType, ReadAnnotFeature &annFeat);
 
 private:

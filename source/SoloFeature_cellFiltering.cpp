@@ -30,6 +30,7 @@ void SoloFeature::cellFiltering()
             break;
         };
         case SoloFeatureTypes::Gene:
+        case SoloFeatureTypes::Scraps:
         case SoloFeatureTypes::GeneFull:
         case SoloFeatureTypes::GeneFull_Ex50pAS:
         case SoloFeatureTypes::GeneFull_ExonOverIntron: 

@@ -314,6 +314,10 @@ void ReadAlign::alignedAnnotation()
     if ( P.quant.gene.yes ) {
         chunkTr->classifyAlign(trMult, nTr, readAnnot);
     };
+    //solo-Scraps
+    if ( P.quant.scraps.yes ) {
+        chunkTr->classifyScrapsAlign(trMult, nTr, readAnnot);
+    };
     //solo-GeneFull_ExonOverIntron
     if ( P.quant.geneFull_ExonOverIntron.yes ) {
         chunkTr->geneFullAlignOverlap_ExonOverIntron(nTr, trMult, P.pSolo.strand, readAnnot.annotFeatures[SoloFeatureTypes::GeneFull_ExonOverIntron], readAnnot.annotFeatures[SoloFeatureTypes::Gene]);
