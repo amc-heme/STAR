@@ -84,6 +84,13 @@ void SoloReadFeature::record(SoloReadBarcode &soloBar, uint nTr, Transcript **al
             case SoloFeatureTypes::GeneFull_ExonOverIntron :
                 {
                     auto *readGe = &readAnnot.annotFeatures[featureType].fSet;
+                    
+                    static uint64 debugCount = 0;
+                    if (featureType == SoloFeatureTypes::Scraps && readGe->size() > 0 && debugCount < 10) {
+                        debugCount++;
+                        std::cerr << "DEBUG record Scraps #" << debugCount << ": readGe->size()=" << readGe->size() 
+                                  << " nTr=" << nTr << " soloBar.cbMatch=" << soloBar.cbMatch << std::endl;
+                    }
 
                     if (soloBar.pSolo.type==soloBar.pSolo.SoloTypes::SmartSeq) {
                         for (int32 itr=nTr-1; itr>=0; itr--) {
@@ -97,11 +104,18 @@ void SoloReadFeature::record(SoloReadBarcode &soloBar, uint nTr, Transcript **al
                         
                     if (readGe->size()==0) {//check genes
                         stats.V[stats.noNoFeature]++;//no gene
+                        if (featureType == SoloFeatureTypes::Scraps && debugCount <= 10) {
+                            std::cerr << "  -> noNoFeature" << std::endl;
+                        }
                     } else if (readGe->size()>1) {
                         stats.V[stats.MultiFeature]++;//multi-gene reads
                         readFlag.setBit(readFlag.featureM);
                         if (nTr>1)
                             stats.V[stats.subMultiFeatureMultiGenomic]++;//multigene caused by multimapper
+                        
+                        if (featureType == SoloFeatureTypes::Scraps && debugCount <= 10) {
+                            std::cerr << "  -> MultiFeature, pSolo.multiMap.yes.multi=" << pSolo.multiMap.yes.multi << std::endl;
+                        }
                             
                         if (pSolo.multiMap.yes.multi) {//output multimappers
                             reFe.geneMult.resize(readGe->size());
@@ -110,13 +124,27 @@ void SoloReadFeature::record(SoloReadBarcode &soloBar, uint nTr, Transcript **al
                                 reFe.geneMult[ii] = g | geneMultMark;
                                 ++ii;
                             };
+                            
+                            if (featureType == SoloFeatureTypes::Scraps && debugCount <= 10) {
+                                std::cerr << "  -> Calling outputReadCB for multi-gene" << std::endl;
+                            }
                                 
                             nFeat = outputReadCB(streamReads, iRead, featureType, soloBar, reFe, readAnnot, readFlag);
+                            
+                            if (featureType == SoloFeatureTypes::Scraps && debugCount <= 10) {
+                                std::cerr << "  -> outputReadCB returned nFeat=" << nFeat << std::endl;
+                            }
                         };
                     } else {//unique-gene reads
+                        if (featureType == SoloFeatureTypes::Scraps && debugCount <= 10) {
+                            std::cerr << "  -> Unique gene, calling outputReadCB" << std::endl;
+                        }
                         reFe.gene = *readGe->begin();
                         readFlag.setBit(readFlag.featureU);
                         nFeat = outputReadCB(streamReads, (readIndexYes ? iRead : (uint64)-1), featureType, soloBar, reFe, readAnnot, readFlag);
+                        if (featureType == SoloFeatureTypes::Scraps && debugCount <= 10) {
+                            std::cerr << "  -> outputReadCB returned nFeat=" << nFeat << std::endl;
+                        }
                     };
 
                     //debug
