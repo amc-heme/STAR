@@ -272,6 +272,7 @@ uint32 outputReadCB(fstream *streamOut, const uint64 iRead, const int32 featureT
             break;
             
         case SoloFeatureTypes::Gene :
+        case SoloFeatureTypes::Scraps :
         case SoloFeatureTypes::GeneFull :
         case SoloFeatureTypes::GeneFull_Ex50pAS :
         case SoloFeatureTypes::GeneFull_ExonOverIntron :
