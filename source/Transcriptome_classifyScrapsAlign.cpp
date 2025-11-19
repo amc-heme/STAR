@@ -78,8 +78,9 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
             bool overlapsExon = false;
             uint32 exI = trExI[tr1]; // Starting index for this transcript's exons in the exSE array
             for (uint32 iex = 0; iex < trExN[tr1]; iex++) {
-                uint32 exStart = exSE[2*(exI + iex)];     // Exon start position
-                uint32 exEnd = exSE[2*(exI + iex) + 1];   // Exon end position
+                // exSE contains positions relative to transcript start, need to add trS to get genomic coordinates
+                uint32 exStart = trS[tr1] + exSE[2*(exI + iex)];     // Exon start position (genomic)
+                uint32 exEnd = trS[tr1] + exSE[2*(exI + iex) + 1];   // Exon end position (genomic)
                 
                 if (doDebug && transcriptsChecked <= 5 && iex < 3) {
                     std::cerr << "        Exon " << iex << ": " << exStart << "-" << exEnd;
