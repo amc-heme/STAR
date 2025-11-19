@@ -85,10 +85,16 @@ void SoloReadFeature::record(SoloReadBarcode &soloBar, uint nTr, Transcript **al
                 {
                     auto *readGe = &readAnnot.annotFeatures[featureType].fSet;
                     
-                    static uint64 debugCount = 0;
-                    if (featureType == SoloFeatureTypes::Scraps && readGe->size() > 0 && debugCount < 10) {
-                        debugCount++;
-                        std::cerr << "DEBUG record Scraps #" << debugCount << ": readGe->size()=" << readGe->size() 
+                    static uint64 debugCountScraps = 0;
+                    static uint64 debugCountGeneFull = 0;
+                    if (featureType == SoloFeatureTypes::Scraps && readGe->size() > 0 && debugCountScraps < 10) {
+                        debugCountScraps++;
+                        std::cerr << "DEBUG record Scraps #" << debugCountScraps << ": readGe->size()=" << readGe->size() 
+                                  << " nTr=" << nTr << " soloBar.cbMatch=" << soloBar.cbMatch << std::endl;
+                    }
+                    if (featureType == SoloFeatureTypes::GeneFull && readGe->size() > 0 && debugCountGeneFull < 10) {
+                        debugCountGeneFull++;
+                        std::cerr << "DEBUG record GeneFull #" << debugCountGeneFull << ": readGe->size()=" << readGe->size() 
                                   << " nTr=" << nTr << " soloBar.cbMatch=" << soloBar.cbMatch << std::endl;
                     }
 
