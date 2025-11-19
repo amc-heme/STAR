@@ -10,7 +10,6 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
     // Like Gene feature, but only requires the 5' end of the alignment to overlap an exon
     // Positive strand (Str==0): 5' end is the leftmost position (start of first aligned block)
     // Negative strand (Str==1): 5' end is the rightmost position (end of last aligned block)
-    // For paired-end reads, only considers mate 1 (iFrag==0)
 
     ReadAnnotFeature &annFeat = readAnnot.annotFeatures[SoloFeatureTypes::Scraps];
 
@@ -19,10 +18,6 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
     for (uint iag=0; iag<nAlignG; iag++) {
         
         Transcript &aG=*alignG[iag];
-        
-        // Skip mate 2 in paired-end reads (only process mate 1, iFrag==0)
-        if (aG.iFrag > 0)
-            continue;
 
         // Binary search through transcript starts using the read's start position
         // (same as Gene feature - use first exon start for initial search)
