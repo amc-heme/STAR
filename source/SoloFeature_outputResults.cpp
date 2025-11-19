@@ -134,7 +134,7 @@ void SoloFeature::outputResults(bool cellFilterYes, string outputPrefixMat)
     
     //////////////////////////////////////////// output unique+multimappers
     if (pSolo.multiMap.yes.multi && !cellFilterYes
-        && (featureType == SoloFeatureTypes::Gene || featureType == SoloFeatureTypes::GeneFull
+        && (featureType == SoloFeatureTypes::Gene || featureType == SoloFeatureTypes::Scraps || featureType == SoloFeatureTypes::GeneFull
          || featureType == SoloFeatureTypes::GeneFull_ExonOverIntron || featureType == SoloFeatureTypes::GeneFull_Ex50pAS) ) {
                           //skipping unique
         nUMIperCBmulti.resize(nCB);
