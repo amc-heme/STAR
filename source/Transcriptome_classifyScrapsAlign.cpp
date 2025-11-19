@@ -41,10 +41,13 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
         do {
             --tr1;
             
-            // Check if read end is beyond transcript end, or strand doesn't match
-            if ( aGend>trE[tr1] ||
-                 (P.pSolo.strand >= 0 && (trStr[tr1]==1 ? aG.Str : 1-aG.Str) != (uint32)P.pSolo.strand) )
-                     continue;
+            // Check strand compatibility (if strand-specific mode is enabled)
+            if (P.pSolo.strand >= 0 && (trStr[tr1]==1 ? aG.Str : 1-aG.Str) != (uint32)P.pSolo.strand)
+                continue;
+            
+            // Check if the 5' position is within this transcript's range
+            if (pos5p < trS[tr1] || pos5p > trE[tr1])
+                continue;
             
             // Check if the 5' position overlaps an exon in this transcript
             bool overlapsExon = false;
@@ -65,7 +68,7 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
                 annFeat.fAlign[iag].insert(trGene[tr1]);
             }
             
-        } while (trEmax[tr1]>=aGend && tr1>0);  // Use same loop condition as Gene feature
+        } while (tr1 > 0 && trS[tr1] <= pos5p);  // Continue while transcript starts are before or at the 5' position
     }
     
     if (annFeat.fSet.size() > 0)
