@@ -14,6 +14,12 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
     ReadAnnotFeature &annFeat = readAnnot.annotFeatures[SoloFeatureTypes::Scraps];
 
     annFeat.fAlign.resize(nAlignG);    
+    
+    static uint64 callCount = 0;
+    callCount++;
+    if (callCount <= 5 && nAlignG > 0) {
+        std::cerr << "DEBUG classifyScrapsAlign called #" << callCount << " nAlignG=" << nAlignG << std::endl;
+    }
        
     for (uint iag=0; iag<nAlignG; iag++) {
         
@@ -69,6 +75,12 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
         } while (tr1 > 0 && trS[tr1] <= pos5p);  // Continue while transcript starts are before or at the 5' position
     }
     
-    if (annFeat.fSet.size() > 0)
+    if (annFeat.fSet.size() > 0) {
         annFeat.ovType = ReadAnnotFeature::overlapTypes::exonic;
+        if (callCount <= 5) {
+            std::cerr << "  -> fSet.size()=" << annFeat.fSet.size() << " genes assigned" << std::endl;
+        }
+    } else if (callCount <= 5) {
+        std::cerr << "  -> NO genes assigned (fSet empty)" << std::endl;
+    }
 }
