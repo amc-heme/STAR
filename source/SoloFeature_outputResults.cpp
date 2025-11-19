@@ -25,6 +25,7 @@ void SoloFeature::outputResults(bool cellFilterYes, string outputPrefixMat)
     //write features.tsv
     switch (featureType) {
         case SoloFeatureTypes::Gene :
+        case SoloFeatureTypes::Scraps :
         case SoloFeatureTypes::GeneFull :
         case SoloFeatureTypes::GeneFull_Ex50pAS :
         case SoloFeatureTypes::GeneFull_ExonOverIntron :
