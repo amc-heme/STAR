@@ -225,6 +225,10 @@ Quantification of different transcriptomic features
         ```
         --soloFeatures SJ
         ```
+    * Counts for mRNA 3' ends on indices with polyA peaks as exons:
+        ```
+        --soloFeatures Scraps
+        ```
     * #### Velocyto spliced/unspliced/ambiguous quantification
         This option will calculate Spliced, Unspliced, and Ambiguous counts per cell per gene similar to the [velocyto.py](http://velocyto.org/) tool developed by [LaManno et al](https://doi.org/10.1038/s41586-018-0414-6). This option is under active development and the results may change in the future versions.
         ```
@@ -233,7 +237,7 @@ Quantification of different transcriptomic features
       Note that Velocyto quantification requires Gene features
     * All the features can be conveniently quantified in one run:
         ```
-        --soloFeatures Gene GeneFull SJ Velocyto
+        --soloFeatures Gene GeneFull SJ Scraps Velocyto
         ```
 
 ------------------------------------------------------
@@ -421,6 +425,7 @@ soloFeatures                Gene
                             Gene            ... genes: reads match the gene transcript
                             SJ              ... splice junctions: reported in SJ.out.tab
                             GeneFull        ... full genes: count all reads overlapping genes' exons and introns
+                            Scraps          ... 3' ends: count reads where the strand-specific 5' end of the alignment (mRNA 3' end) overlaps an exon (polyA peak) on a specialized index.
 
 soloUMIdedup                1MM_All
     string(s):              type of UMI deduplication (collapsing) algorithm
