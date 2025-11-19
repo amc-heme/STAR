@@ -21,6 +21,22 @@ void SoloFeature::outputResults(bool cellFilterYes, string outputPrefixMat)
     };
     */
     
+    // DEBUG for Scraps
+    if (featureType == SoloFeatureTypes::Scraps) {
+        uint64 totalUnique = 0, totalMulti = 0;
+        for (uint32 icb=0; icb<nCB && icb<5; icb++) {
+            totalUnique += nGenePerCB[icb];
+        }
+        if (pSolo.multiMap.yes.multi) {
+            for (uint32 icb=0; icb<nCB && icb<5; icb++) {
+                totalMulti += (countMatMult.i[icb+1] - countMatMult.i[icb]) / countMatMult.s;
+            }
+        }
+        P.inOut->logMain << "DEBUG Scraps: nCB=" << nCB 
+                         << " totalUnique(first 5 cells)=" << totalUnique 
+                         << " totalMulti(first 5 cells)=" << totalMulti << std::endl;
+    }
+    
     /////////////////////////////////////////////////////////////
     //write features.tsv
     switch (featureType) {
