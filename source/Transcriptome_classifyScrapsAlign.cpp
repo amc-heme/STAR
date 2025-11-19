@@ -19,14 +19,6 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
         
         Transcript &aG=*alignG[iag];
 
-        // Binary search through transcript starts using the read's start position
-        // (same as Gene feature - use first exon start for initial search)
-        uint32 tr1=binarySearch1a<uint>(aG.exons[0][EX_G], trS, nTr);
-        if (tr1==(uint32) -1) 
-            continue; // This alignment is outside of range of all transcripts
-
-        uint64 aGend=aG.exons[aG.nExons-1][EX_G]+aG.exons[aG.nExons-1][EX_L]-1;
-
         // Determine the 5' end position based on strand
         uint64 pos5p;
         if (aG.Str == 0) {
@@ -36,6 +28,11 @@ void Transcriptome::classifyScrapsAlign (Transcript **alignG, uint64 nAlignG, Re
             // Negative strand: 5' end is the rightmost position (end of last aligned block)
             pos5p = aG.exons[aG.nExons-1][EX_G] + aG.exons[aG.nExons-1][EX_L] - 1;
         }
+
+        // Binary search through transcript starts using the 5' position
+        uint32 tr1=binarySearch1a<uint>(pos5p, trS, nTr);
+        if (tr1==(uint32) -1) 
+            continue; // The 5' position is before all transcripts
 
         ++tr1;
         do {
